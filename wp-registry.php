@@ -13,5 +13,12 @@ require 'autoload.php';
 
 // Instantiate the class and register hooks
 if (defined('WP_REGISTRY_ENABLED') && WP_REGISTRY_ENABLED) {
-    $WP_Registry_Client = new Plugin(__FILE__, WP_REGISTRY_URL, WP_REGISTRY_SITE_ID);
+    $tasks = [
+        new ScheduledTasks\AnnounceToRegistry(WP_REGISTRY_URL, WP_REGISTRY_SITE_ID),
+    ];
+
+    $WP_Registry_Client = new Plugin($tasks);
+
+    $WP_Registry_Client->registerActivationHooks(__FILE__);
+
 }

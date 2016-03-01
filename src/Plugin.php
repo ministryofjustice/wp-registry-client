@@ -6,23 +6,10 @@
 
 namespace MOJDigital\WP_Registry\Client;
 
-use MOJDigital\WP_Registry\Client\ScheduledTasks\AnnounceToRegistry;
 use MOJDigital\WP_Registry\Client\ScheduledTasks\BaseScheduledTask;
 
 class Plugin
 {
-    /**
-     * URL for accessing the WP Registry server
-     * @var string
-     */
-    public $registryUrl = null;
-
-    /**
-     * Identifier for this WordPress install
-     * @var string
-     */
-    public $siteId = null;
-
     /**
      * Array of scheduled task objects
      * @var BaseScheduledTask[]
@@ -31,16 +18,11 @@ class Plugin
 
     /**
      * Plugin constructor.
-     * @param string $pluginFile Path to the WordPress plugin file
-     * @param string $registryUrl
-     * @param string $siteId
+     * @param BaseScheduledTask[] $tasks Scheduled task objects
      */
-    public function __construct($pluginFile, $registryUrl, $siteId)
+    public function __construct($tasks)
     {
-        $this->registryUrl = $registryUrl;
-        $this->siteId = $siteId;
-        $this->registerActivationHooks($pluginFile);
-        $this->constructScheduledTasks();
+        $this->scheduledTasks = $tasks;
         $this->registerHooksForScheduledTasks();
     }
 
@@ -55,19 +37,10 @@ class Plugin
     }
 
     /**
-     * Construct scheduled task objects and store them
-     * in array $this->scheduledTasks
-     */
-    public function constructScheduledTasks() {
-        $tasks = [];
-        $tasks[] = new AnnounceToRegistry($this->registryUrl, $this->siteId);
-        $this->scheduledTasks = $tasks;
-    }
-
-    /**
      * Register execution hooks for scheduled tasks.
      */
-    public function registerHooksForScheduledTasks() {
+    public function registerHooksForScheduledTasks()
+    {
         foreach ($this->scheduledTasks as $task) {
             $task->registerHook();
         }
