@@ -2,8 +2,18 @@
 
 namespace MOJDigital\WP_Registry\Client\Commands;
 
+use MOJDigital\WP_Registry\Client\Traits\UsesWordPressGlobalFunctionsInvoker;
+
 class Announce
 {
+    use UsesWordPressGlobalFunctionsInvoker;
+
+    /**
+     * Site identifier string used at WP Registry.
+     * @var string
+     */
+    public $siteId = null;
+
     public function __construct($siteId)
     {
         $this->siteId = $siteId;
@@ -12,10 +22,10 @@ class Announce
     public function execute()
     {
         $response = [
-            'site_name' => get_bloginfo('name'),
+            'site_name' => $this->wp()->get_bloginfo('name'),
             'site_id' => $this->siteId,
-            'url' => get_bloginfo('url'),
-            'wordpress_version' => get_bloginfo('version'),
+            'url' => $this->wp()->get_bloginfo('url'),
+            'wordpress_version' => $this->wp()->get_bloginfo('version'),
             'plugins' => $this->getPlugins(),
         ];
         return $response;
@@ -34,19 +44,15 @@ class Announce
      */
     private function getPlugins()
     {
-        if (!function_exists('get_plugins')) {
-            require_once ABSPATH . 'wp-admin/includes/plugin.php';
-        }
-
         $plugins = array_map(function($plugin) {
             $plugin['mu'] = false;
             return $plugin;
-        }, get_plugins());
+        }, $this->wp()->get_plugins());
 
         $mu_plugins = array_map(function($plugin) {
             $plugin['mu'] = true;
             return $plugin;
-        }, get_mu_plugins());
+        }, $this->wp()->get_mu_plugins());
 
         $plugins = array_merge($plugins, $mu_plugins);
         $response = [];
@@ -57,7 +63,7 @@ class Announce
                 'slug' => basename($file, '.php'),
                 'version' => $plugin['Version'],
                 'mu' => $plugin['mu'],
-                'active' => ($plugin['mu']) ? true : is_plugin_active($file),
+                'active' => ($plugin['mu']) ? true : $this->wp()->is_plugin_active($file),
             ];
         }
 
