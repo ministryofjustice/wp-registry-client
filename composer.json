@@ -1,0 +1,12 @@
+{
+    "name": "ministryofjustice/wp-registry",
+    "description": "Client plugin for WP Registry",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Ollie Treend",
+            "email": "ollie.treend@digital.justice.gov.uk"
+        }
+    ],
+    "require": {}
+}
