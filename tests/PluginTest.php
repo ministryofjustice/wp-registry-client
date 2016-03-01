@@ -8,7 +8,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
      * Generate an array of 2 mock scheduled tasks.
      * @return array
      */
-    private function getArrayOfMockScheduledTasks() {
+    private function getArrayOfMockScheduledTasks()
+    {
         $tasks = [];
         for ($i = 0; $i < 2; $i++) {
             $tasks[] = $this->getMockBuilder('\MOJDigital\WP_Registry\Client\ScheduledTasks\BaseScheduledTask')
@@ -30,10 +31,28 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         return $p;
     }
 
+    public function testRegistersActivationHooks()
+    {
+        $wp = $this->getMockBuilder('MOJDigital\WP_Registry\Client\WordPressGlobalFunctionsInvoker')
+            ->setMethods(['register_activation_hook', 'register_deactivation_hook'])
+            ->getMock();
+
+        $wp->expects($this->atLeastOnce())
+            ->method('register_activation_hook');
+
+        $wp->expects($this->atLeastOnce())
+            ->method('register_deactivation_hook');
+
+        $tasks = $this->getArrayOfMockScheduledTasks();
+        $p = new Plugin($tasks);
+        $p->setWordPressGlobalFunctionsInvoker($wp);
+        $p->registerActivationHooks(__FILE__);
+    }
+
     /**
- * @covers \MOJDigital\WP_Registry\Client\Plugin::registerHooksForScheduledTasks
- * @uses   \MOJDigital\WP_Registry\Client\Plugin
- */
+     * @covers \MOJDigital\WP_Registry\Client\Plugin::registerHooksForScheduledTasks
+     * @uses   \MOJDigital\WP_Registry\Client\Plugin
+     */
     public function testRegistersHooksForScheduledTasks()
     {
         $tasks = $this->getArrayOfMockScheduledTasks();
@@ -44,7 +63,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
                 ->method('registerHook');
         }
 
-        new Plugin($tasks);
+        $p = new Plugin($tasks);
+        $p->registerHooksForScheduledTasks();
     }
 
     /**

@@ -7,9 +7,12 @@
 namespace MOJDigital\WP_Registry\Client;
 
 use MOJDigital\WP_Registry\Client\ScheduledTasks\BaseScheduledTask;
+use MOJDigital\WP_Registry\Client\Traits\UsesWordPressGlobalFunctionsInvoker;
 
 class Plugin
 {
+    use UsesWordPressGlobalFunctionsInvoker;
+
     /**
      * Array of scheduled task objects
      * @var BaseScheduledTask[]
@@ -23,7 +26,6 @@ class Plugin
     public function __construct($tasks)
     {
         $this->scheduledTasks = $tasks;
-        $this->registerHooksForScheduledTasks();
     }
 
     /**
@@ -32,8 +34,8 @@ class Plugin
      */
     public function registerActivationHooks($pluginFile)
     {
-        register_activation_hook($pluginFile, array($this, 'addScheduledTasksToCron'));
-        register_deactivation_hook($pluginFile, array($this, 'removeScheduledTasksFromCron'));
+        $this->wp()->register_activation_hook($pluginFile, array($this, 'addScheduledTasksToCron'));
+        $this->wp()->register_deactivation_hook($pluginFile, array($this, 'removeScheduledTasksFromCron'));
     }
 
     /**

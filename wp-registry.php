@@ -17,8 +17,10 @@ if (defined('WP_REGISTRY_ENABLED') && WP_REGISTRY_ENABLED) {
         new ScheduledTasks\AnnounceToRegistry(WP_REGISTRY_URL, WP_REGISTRY_SITE_ID),
     ];
 
-    $WP_Registry_Client = new Plugin($tasks);
+    $wpFunctions = new WordPressGlobalFunctionsInvoker();
 
+    $WP_Registry_Client = new Plugin($tasks);
     $WP_Registry_Client->registerActivationHooks(__FILE__);
+    $WP_Registry_Client->registerHooksForScheduledTasks();
 
 }
