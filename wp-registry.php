@@ -9,15 +9,18 @@
 
 namespace MOJDigital\WP_Registry\Client;
 
+use MOJDigital\WP_Registry\Client\Commands\Announce;
+
 require 'autoload.php';
 
 // Instantiate the class and register hooks
 if (defined('WP_REGISTRY_ENABLED') && WP_REGISTRY_ENABLED) {
     $tasks = [
-        new ScheduledTasks\AnnounceToRegistry(WP_REGISTRY_URL, WP_REGISTRY_SITE_ID),
+        new ScheduledTasks\AnnounceToRegistry(
+            WP_REGISTRY_URL,
+            new Announce(WP_REGISTRY_SITE_ID)
+        ),
     ];
-
-    $wpFunctions = new WordPressGlobalFunctionsInvoker();
 
     $WP_Registry_Client = new Plugin($tasks);
     $WP_Registry_Client->registerActivationHooks(__FILE__);
