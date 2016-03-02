@@ -3,9 +3,12 @@
 namespace MOJDigital\WP_Registry\Client\ScheduledTasks;
 
 use MOJDigital\WP_Registry\Client\Commands\Announce;
+use MOJDigital\WP_Registry\Client\Traits\UsesWordPressGlobalFunctionsInvoker;
 
 class AnnounceToRegistry extends BaseScheduledTask
 {
+    use UsesWordPressGlobalFunctionsInvoker;
+
     /**
      * How often the event should reoccur.
      * Valid values: hourly, twicedaily, daily
@@ -20,21 +23,21 @@ class AnnounceToRegistry extends BaseScheduledTask
     public $registryUrl = null;
 
     /**
-     * Holds the Site ID of the current WordPress install.
-     * @var string
+     * Holds the Announce object used to generate the payload for submitting to the registry.
+     * @var Announce
      */
-    public $siteId = null;
+    public $announceObject = null;
 
     /**
      * AnnounceToRegistry constructor.
      * @param string $registryUrl
-     * @param string $siteId
+     * @param Announce $announceObject
      */
-    public function __construct($registryUrl, $siteId)
+    public function __construct($registryUrl, Announce $announceObject)
     {
         parent::__construct();
         $this->registryUrl = $registryUrl;
-        $this->siteId = $siteId;
+        $this->announceObject = $announceObject;
     }
 
     /**
@@ -42,18 +45,19 @@ class AnnounceToRegistry extends BaseScheduledTask
      */
     public function execute()
     {
-        $announce = new Announce($this->siteId);
-        $payload = $announce->execute();
-        $return = wp_remote_post(WP_REGISTRY_URL, [
+        $announce = $this->announceObject->execute();
+        $return = $this->wp()->wp_remote_post($this->registryUrl, [
             'body' => [
-                'payload' => json_encode($payload),
+                'payload' => json_encode($announce),
             ],
         ]);
 
-        if (is_wp_error($return)) {
-            trigger_error('WP Registry (client): could not announce to registry. WP_Error was returned with message: ' . $return->get_error_message(), E_USER_ERROR);
-        } else if ($return['response']['code'] !== 200) {
-            trigger_error('WP Registry (client): could not announce to registry. A non-200 status code was returned: ' . $return['response']['code'] . ' ' . $return['response']['message'], E_USER_ERROR);
+        if ($this->wp()->is_wp_error($return)) {
+            trigger_error(
+                'WP Registry (client): could not announce to registry. WP_Error was returned with message: ' .
+                $return->get_error_message(),
+                E_USER_ERROR
+            );
         }
     }
 }
