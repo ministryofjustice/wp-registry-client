@@ -1,5 +1,5 @@
 {
-    "name": "ministryofjustice/wp-registry",
+    "name": "ministryofjustice/wp-registry-client",
     "description": "Client plugin for WP Registry",
     "type": "wordpress-plugin",
     "authors": [
