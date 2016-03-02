@@ -53,7 +53,11 @@ class AnnounceToRegistry extends BaseScheduledTask
         ]);
 
         if ($this->wp()->is_wp_error($return)) {
-            trigger_error('WP Registry (client): could not announce to registry. WP_Error was returned with message: ' . $return->get_error_message(), E_USER_ERROR);
+            trigger_error(
+                'WP Registry (client): could not announce to registry. WP_Error was returned with message: ' .
+                $return->get_error_message(),
+                E_USER_ERROR
+            );
         }
     }
 }

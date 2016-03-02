@@ -37,7 +37,12 @@ class AnnounceTest extends \PHPUnit_Framework_TestCase
                 'Name' => 'Akismet',
                 'PluginURI' => 'http://akismet.com/',
                 'Version' => '3.1.6',
-                'Description' => 'Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. It keeps your site protected even while you sleep. To get started: 1) Click the "Activate" link to the left of this description, 2) <a href="http://akismet.com/get/">Sign up for an Akismet plan</a> to get an API key, and 3) Go to your Akismet configuration page, and save your API key.',
+                'Description' => 'Used by millions, Akismet is quite possibly the best way in the world to ' .
+                                 '<strong>protect your blog from spam</strong>. It keeps your site protected even ' .
+                                 'while you sleep. To get started: 1) Click the "Activate" link to the left of this ' .
+                                 'description, 2) <a href="http://akismet.com/get/">Sign up for an Akismet plan</a> ' .
+                                 'to get an API key, and 3) Go to your Akismet configuration page, and save your ' .
+                                 'API key.',
                 'Author' => 'Automattic',
                 'AuthorURI' => 'http://automattic.com/wordpress-plugins/',
                 'TextDomain' => 'akismet',
@@ -50,7 +55,8 @@ class AnnounceTest extends \PHPUnit_Framework_TestCase
                 'Name' => 'wp-bcrypt',
                 'PluginURI' => 'http://wordpress.org/plugins/wp-bcrypt/',
                 'Version' => '1.0.1',
-                'Description' => 'wp-bcrypt switches WordPress\'s password hashes from MD5 to bcrypt, making it harder for them to be brute-forced if they are leaked.',
+                'Description' => 'wp-bcrypt switches WordPress\'s password hashes from MD5 to bcrypt, making it ' .
+                                 'harder for them to be brute-forced if they are leaked.',
                 'Author' => 'dxw',
                 'AuthorURI' => 'http://dxw.com',
                 'TextDomain' => '',

@@ -44,12 +44,12 @@ class Announce
      */
     private function getPlugins()
     {
-        $plugins = array_map(function($plugin) {
+        $plugins = array_map(function ($plugin) {
             $plugin['mu'] = false;
             return $plugin;
         }, $this->wp()->get_plugins());
 
-        $mu_plugins = array_map(function($plugin) {
+        $mu_plugins = array_map(function ($plugin) {
             $plugin['mu'] = true;
             return $plugin;
         }, $this->wp()->get_mu_plugins());

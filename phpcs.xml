@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="wp-registry-client">
+ <description>The coding standard for WP Registry (client) WordPress plugin.</description>
+
+ <file>wp-registry.php</file>
+ <file>src/</file>
+ <file>tests/</file>
+ <exclude-pattern>WordPressGlobalFunctionsInvoker.php</exclude-pattern>
+
+ <rule ref="PSR2"/>
+</ruleset>

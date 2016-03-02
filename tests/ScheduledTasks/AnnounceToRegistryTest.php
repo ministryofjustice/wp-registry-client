@@ -57,7 +57,8 @@ class AnnounceToRegistryTest extends \PHPUnit_Framework_TestCase
         $this->object = new AnnounceToRegistry($this->registryUrl, $announce);
     }
 
-    private function getMockWordPressGlobalFunctionsInvoker() {
+    private function getMockWordPressGlobalFunctionsInvoker()
+    {
         return $this->getMockBuilder('MOJDigital\WP_Registry\Client\WordPressGlobalFunctionsInvoker')
             ->setMethods([
                 'wp_remote_post',
@@ -81,7 +82,7 @@ class AnnounceToRegistryTest extends \PHPUnit_Framework_TestCase
                 'message' => 'OK',
             ],
             'cookies' => [],
-            'filename' => NULL,
+            'filename' => null,
         ];
 
         $expectedRequestArgs = [
