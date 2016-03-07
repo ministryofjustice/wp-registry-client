@@ -46,10 +46,9 @@ class AnnounceToRegistry extends BaseScheduledTask
     public function execute()
     {
         $announce = $this->announceObject->execute();
-        $return = $this->wp()->wp_remote_post($this->registryUrl, [
-            'body' => [
-                'payload' => json_encode($announce),
-            ],
+        $url = $this->registryUrl . '/api/installs/announce';
+        $return = $this->wp()->wp_remote_post($url, [
+            'body' => $announce,
         ]);
 
         if ($this->wp()->is_wp_error($return)) {

@@ -85,14 +85,13 @@ class AnnounceToRegistryTest extends \PHPUnit_Framework_TestCase
             'filename' => null,
         ];
 
+        $expectedUrl = $this->registryUrl . '/api/installs/announce';
         $expectedRequestArgs = [
-            'body' => [
-                'payload' => json_encode($this->mockAnnounce),
-            ],
+            'body' => $this->mockAnnounce,
         ];
 
         $wp->method('wp_remote_post')
-            ->with($this->equalTo($this->registryUrl), $this->identicalTo($expectedRequestArgs))
+            ->with($this->equalTo($expectedUrl), $this->identicalTo($expectedRequestArgs))
             ->will($this->returnValue($mockResponse));
 
         $wp->method('is_wp_error')
