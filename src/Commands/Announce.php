@@ -58,9 +58,15 @@ class Announce
         $response = [];
 
         foreach ($plugins as $file => $plugin) {
+            if (dirname($file) == '.') {
+                $slug = basename($file, '.php');
+            } else {
+                $slug = dirname($file);
+            }
+
             $response[] = [
                 'name' => $plugin['Name'],
-                'slug' => basename($file, '.php'),
+                'slug' => $slug,
                 'version' => $plugin['Version'],
                 'mu' => $plugin['mu'],
                 'active' => ($plugin['mu']) ? true : $this->wp()->is_plugin_active($file),
